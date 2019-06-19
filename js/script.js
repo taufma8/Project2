@@ -21,7 +21,7 @@ const list = document.querySelectorAll('.student-item');
 const studentsPerPage = 10;
 
 
-console.log(list);
+//console.log(list);
 
 
 /*** 
@@ -52,40 +52,48 @@ const showPage = (list, page) => {
      }
    }
 }
-showPage(list, 1);
 
+function numberOfPages (students) {
+   return Math.ceil(students.length/studentsPerPage);
+}
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
 ***/
-function numberOfPages (students) {
-   return Math.ceil(students.length/studentsPerPage);
-}
 
-
-function appendPageLinks (studentsToShow) {
+function appendPageLinks () {
    const getDiv = document.querySelector('.page');
    const newDiv = document.createElement('div');
-   div.className = 'pagination';
-      if (getDiv !== newDiv) {
-         newDiv();
-      } 
+   newDiv.setAttribute('class', 'pagination');
+   getDiv.appendChild(newDiv);
+
+   const ul = document.createElement('ul');
+   for (let i = 1; i <= numberOfPages(list); i++) {
+      const li = document.createElement('li');
+
+      const a = document.createElement('a');
+
+      a.textContent = i;
+      li.appendChild(a);
+
+      a.addEventListener('click', (e) => {
+         const links = document.querySelectorAll('li a');
+         for (i = 0; i < links.length; i++) {
+            links[i].classList.remove('active'); //remove a class
+         }
+         e.target.className = 'active';
+         let pageNumber = Number(e.target.textContent);
+         showPage(list, pageNumber);
+      });
+
+      a.setAttribute('href', '#');
+      newDiv.appendChild(ul);
+      ul.appendChild(li);
    }
-
-const ul = document.createElement('ul');
-for (i = 0; i < numberOfPages.length; i++) {
-   const li = document.createElement('li');
-   ul.appendChild(li);
-   
 }
 
+showPage(list, 1);
 
-
-
-
-   // const paginationLinks = document.querySelectorAll('.pagination');
-   // div.appendChild(paginationLinks);
-}
-
-
+appendPageLinks ();
+document.querySelector('.pagination li:first-child a').className = 'active';
 // Remember to delete the comments that came with this file, and replace them with your own code comments.
