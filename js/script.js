@@ -7,39 +7,26 @@ FSJS project 2 - List Filter and Pagination
 
 
 /*** 
-   Add your global variables that store the DOM elements you will 
-   need to reference and/or manipulate. 
-   
-   But be mindful of which variables should be global and which 
-   should be locally scoped to one of the two main functions you're 
-   going to create. A good general rule of thumb is if the variable 
-   will only be used inside of a function, then it can be locally 
-   scoped to that function.
-***/
+Adding in global variables.
+-the first one to access the specific part of the student list by targeting the li element's class name.
+-the second one, how many students I want per page. ***/
 
 const list = document.querySelectorAll('.student-item');
 const studentsPerPage = 10;
 
-
-//console.log(list);
-
-
-/*** 
-   Create the `showPage` function to hide all of the items in the 
-   list except for the ten you want to show.
-
-    Pro Tips: 
-     - Keep in mind that with a list of 54 students, the last page 
-       will only display four.
-     - Remember that the first student has an index of 0.
-     - Remember that a function `parameter` goes in the parens when 
-       you initially define the function, and it acts as a variable 
-       or a placeholder to represent the actual function `argument` 
-       that will be passed into the parens later when you call or 
-       "invoke" the function 
-***/
+/*** Create a showPage function with 2 parameters. 
+   -one for your variable targeting the li element. 
+   -one for the page number you want it to show up to.
+   Inside the function, add in the startIndex and endIndex.
+   -startIndex will equal to page multiplied by studentsPerPage minus students per page.
+   -endIndex will equal to page multiplied by studentsPerPage.
+   Create a for loop for how many students you have.  
+      Inside the loop:
+      if the index is greater than or equal to the startIndex AND the index is less than the endIndex
+      then show the list. If not, then hide. 
+   ***/
 const showPage = (list, page) => {
-   const startIndex = (page * studentsPerPage) - studentsPerPage; // (page - 1) * studentsPerPage
+   const startIndex = (page * studentsPerPage) - studentsPerPage; 
    const endIndex = page * studentsPerPage;
 
    for (let i = 0; i < list.length; i++) {
@@ -53,12 +40,24 @@ const showPage = (list, page) => {
    }
 }
 
-function numberOfPages (students) {
-   return Math.ceil(students.length/studentsPerPage);
+/*** Create a function to show the number of pages.
+Use your global variable as a parameter.
+Inside the function:
+Create a return statement that will give you the value of the number of items 
+on your list divided by the students per page rounded up.
+***/
+
+function numberOfPages (list) {
+   return Math.ceil(list.length/studentsPerPage);
 }
+
 /*** 
-   Create the `appendPageLinks function` to generate, append, and add 
-   functionality to the pagination buttons.
+Create the appendPageLinks function. 
+Inside the function:
+   -Create a constant for the first div you're trying to select.
+   -Create a constant for the new div you're trying to create.
+   -Set the class pagination to the new div.
+   -Append it to the old div.  
 ***/
 
 function appendPageLinks () {
@@ -67,14 +66,42 @@ function appendPageLinks () {
    newDiv.setAttribute('class', 'pagination');
    getDiv.appendChild(newDiv);
 
+/*** 
+Create a constant for the ul element.
+Append the ul element to the new div. 
+Add the rest of these in a for loop. Use the function you 
+created for the number of pages with the parameter of the student list.
+   -Create a constant for the li element.
+   -Append the li element to the ul element. 
+   -Create a constant for the a tag.
+   -Set the property of the a tag to href and value to a number.
+   -Set the text content of the a tag to a number. The number will change as the page changes (therefore, use index).
+   -Append the a tag to the list element. 
+***/
+
    const ul = document.createElement('ul');
+   newDiv.appendChild(ul);
    for (let i = 1; i <= numberOfPages(list); i++) {
       const li = document.createElement('li');
-
+      ul.appendChild(li);
       const a = document.createElement('a');
-
+      a.setAttribute('href', '#');
       a.textContent = i;
       li.appendChild(a);
+
+//Set the first item on the list as active. We will change this later to change the class name as you click on different pages. 
+document.querySelector('.pagination li:first-child a').className = 'active';
+
+/*** 
+Create an event handler to handle what happens when you click the page numbers.
+Inside the function:
+      -Create a variable to select which parts you want to target that will do something when clicked (a tags).
+      -You will need a for loop to iterate through the a tags.
+      -If a specific page is clicked, you need to add the class 'active'. 
+         -Create a variable to show that the event clicked is a number. 
+      -If it is not the page you clicked, then remove the class 'active'.
+      -Call the showPage function targeting your list of students and the page number.
+***/
 
       a.addEventListener('click', (e) => {
          const links = document.querySelectorAll('li a');
@@ -85,15 +112,10 @@ function appendPageLinks () {
          let pageNumber = Number(e.target.textContent);
          showPage(list, pageNumber);
       });
-
-      a.setAttribute('href', '#');
-      newDiv.appendChild(ul);
-      ul.appendChild(li);
    }
 }
 
+//Call your functions.
 showPage(list, 1);
 
-appendPageLinks ();
-document.querySelector('.pagination li:first-child a').className = 'active';
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
+appendPageLinks (list);
