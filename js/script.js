@@ -115,7 +115,37 @@ Inside the function:
    }
 }
 
+function searchBar () {
+   const headerDiv = document.querySelector('.page-header');
+   const searchDiv = document.createElement('div');
+   searchDiv.setAttribute('class', 'student-search');
+   headerDiv.appendChild(searchDiv);
+
+   const input = document.createElement('input');
+   searchDiv.appendChild(input);
+   input.placeholder = 'Search for students...';
+
+   const searchButton = document.createElement('button');
+   searchDiv.appendChild(searchButton);
+   searchButton.textContent = 'Search';
+
+}
+   // searchButton.addEventListener('search', (e) => {
+   //    e.preventDefault();
+   //    // if (e.target.tagname === 'BUTTON') {
+   //       if (input.value === list.value) {
+   //          // return li.textContent = input.value
+   //       }
+   //    }
+      // if (input.value === ) {
+
+
+ 
+
+
 //Call your functions.
 showPage(list, 1);
 
 appendPageLinks (list);
+
+searchBar(list);
