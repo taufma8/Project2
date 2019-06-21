@@ -120,4 +120,3 @@ showPage(list, 1);
 
 appendPageLinks (list);
 
-// searchBar(list);
